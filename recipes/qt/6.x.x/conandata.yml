@@ -66,6 +66,22 @@ sources:
       - "https://ftp.yz.yamagata-u.ac.jp/pub/qtproject/archive/qt/6.8/6.8.3/single/qt-everywhere-src-6.8.3.tar.xz"
     sha256: "cdd3a69967208276bb01af7ace7dba0ba53e679f886a4cbe624225c60fb73f2c"
 patches:
+  "6.12.0":
+    - "patch_file": "patches/qtbug-152004-aaudio-stream-aliases.patch"
+      "patch_description": "Android: add the SourceType and SinkType aliases the QPlatformSourceStream and QPlatformSinkStream concepts require; without them Qt Multimedia does not compile with C++20 or newer"
+      "patch_type": "backport"
+      "patch_source": "https://code.qt.io/cgit/qt/qtmultimedia.git/commit/?h=6.12&id=9b78aba9d610a287f8939658760a10038b33e60f"
+      "base_path": "qtmultimedia"
+    - "patch_file": "patches/qffmpeg-ranges-to-explicit-container.patch"
+      "patch_description": "Name the container type in ranges::to<QMinimalFlatSet<AVPixelFormat>>() (libc++ 17, NDK r27c, cannot deduce a template template argument) and drop the disabled debug output that needs the same deduction"
+      "patch_type": "portability"
+      "patch_source": "https://code.qt.io/cgit/qt/qtmultimedia.git/tree/src/plugins/multimedia/ffmpeg/recordingengine/qffmpegvideoencoderutils.cpp?h=6.12"
+      "base_path": "qtmultimedia"
+    - "patch_file": "patches/qffmpeg-mediacodec-include-qrhi.patch"
+      "patch_description": "Include qrhi.h where MediaCodecTextureConverter holds a std::unique_ptr<QRhiTexture>: with C++23, libc++ 17 instantiates the destructor in the inline constructor, where QRhiTexture is only forward declared"
+      "patch_type": "portability"
+      "patch_source": "https://qt-project.atlassian.net/browse/QTBUG-152345"
+      "base_path": "qtmultimedia"
   "6.8.3":
     - "patch_file": "patches/remove-linkage-to-agl-framework.patch"
       "base_path": "qtbase"

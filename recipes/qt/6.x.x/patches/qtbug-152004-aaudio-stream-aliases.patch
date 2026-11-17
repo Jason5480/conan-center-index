@@ -1,0 +1,54 @@
+From 9b78aba9d610a287f8939658760a10038b33e60f Mon Sep 17 00:00:00 2001
+From: Iason Nikolas <jasonnikolas5480@gmail.com>
+Date: Wed, 4 Nov 2026 00:43:25 +0200
+Subject: Android: add the SourceType and SinkType aliases to the AAudio
+ streams
+
+QPlatformSourceStream and QPlatformSinkStream require StreamType::SourceType
+and StreamType::SinkType. Every other backend's stream defines them, but
+QAndroidAudioSourceStream and QAndroidAudioSinkStream do not. The concepts
+are checked only when __cpp_concepts is defined, so Qt Multimedia fails to
+compile for Android when Qt itself is built with C++20
+(QT_FEATURE_cxx20, e.g. with NDK r27c): qandroidaudiosource.cpp,
+qandroidaudiosink.cpp, and qandroidaudiodevices.cpp report "constraints not
+satisfied" and the errors that follow from it.
+
+Fixes: QTBUG-152004
+Change-Id: I4f4b732ea8efe5f1e8fe1e0510cb39f8218d9758
+Reviewed-by: Tim Blechmann <tim.blechmann@qt.io>
+(cherry picked from commit 588732ab080f1400fba131be2e275768a04f2848)
+Reviewed-by: Qt Cherry-pick Bot <cherrypick_bot@qt-project.org>
+---
+ src/multimedia/android/qandroidaudiosink_p.h   | 2 ++
+ src/multimedia/android/qandroidaudiosource_p.h | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/src/multimedia/android/qandroidaudiosink_p.h b/src/multimedia/android/qandroidaudiosink_p.h
+index dd26be78e..9807110d0 100644
+--- a/src/multimedia/android/qandroidaudiosink_p.h
++++ b/src/multimedia/android/qandroidaudiosink_p.h
+@@ -35,6 +35,8 @@ class QAndroidAudioSinkStream final : public std::enable_shared_from_this<QAndro
+     using NativePeriodFrames = QtMultimediaPrivate::NativePeriodFrames;
+ 
+ public:
++    using SinkType = QAndroidAudioSink;
++
+     explicit QAndroidAudioSinkStream(QAudioDevice, const QAudioFormat &,
+                                      std::optional<qsizetype> ringbufferSize,
+                                      QAndroidAudioSink *parent, float volume,
+diff --git a/src/multimedia/android/qandroidaudiosource_p.h b/src/multimedia/android/qandroidaudiosource_p.h
+index 8c26e7be2..d73bac29b 100644
+--- a/src/multimedia/android/qandroidaudiosource_p.h
++++ b/src/multimedia/android/qandroidaudiosource_p.h
+@@ -33,6 +33,8 @@ class QAndroidAudioSourceStream final : public QtMultimediaPrivate::QPlatformAud
+     using NativePeriodFrames = QtMultimediaPrivate::NativePeriodFrames;
+ 
+ public:
++    using SourceType = QAndroidAudioSource;
++
+     explicit QAndroidAudioSourceStream(QAudioDevice device, const QAudioFormat &format,
+                                        std::optional<int> ringbufferSize,
+                                        QAndroidAudioSource *parent, float volume,
+-- 
+cgit v1.2.3
+

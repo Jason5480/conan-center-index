@@ -1,0 +1,12 @@
+diff --git a/src/plugins/multimedia/ffmpeg/android/qffmpeghwaccel_mediacodec_p.h b/src/plugins/multimedia/ffmpeg/android/qffmpeghwaccel_mediacodec_p.h
+--- a/src/plugins/multimedia/ffmpeg/android/qffmpeghwaccel_mediacodec_p.h
++++ b/src/plugins/multimedia/ffmpeg/android/qffmpeghwaccel_mediacodec_p.h
+@@ -18,6 +18,8 @@
+ #include <QtFFmpegMediaPluginImpl/private/qffmpeghwaccel_p.h>
+ #include <memory>
+ 
++#include <QtGui/rhi/qrhi.h>
++
+ #include <QtCore/qtconfigmacros.h>
+ 
+ QT_BEGIN_NAMESPACE
