@@ -66,6 +66,18 @@ sources:
       - "https://ftp.yz.yamagata-u.ac.jp/pub/qtproject/archive/qt/6.8/6.8.3/single/qt-everywhere-src-6.8.3.tar.xz"
     sha256: "cdd3a69967208276bb01af7ace7dba0ba53e679f886a4cbe624225c60fb73f2c"
 patches:
+  "6.12.0":
+    - "patch_file": "patches/qtbase-endentrylist-out-of-line.patch"
+      "patch_description": "Define QAbstractFileEngine::endEntryList() out of line: with C++23, MSVC instantiates the destructor of std::unique_ptr<QAbstractFileEngineIterator> in the inline body, where the iterator is only forward declared"
+      "patch_type": "backport"
+      "patch_source": "https://code.qt.io/cgit/qt/qtbase.git/commit/?h=6.12&id=852e93e9ee56b61eac58ca35605b790480d201e1"
+      "base_path": "qtbase"
+  "6.11.3":
+    - "patch_file": "patches/qtbase-endentrylist-out-of-line.patch"
+      "patch_description": "Define QAbstractFileEngine::endEntryList() out of line: with C++23, MSVC instantiates the destructor of std::unique_ptr<QAbstractFileEngineIterator> in the inline body, where the iterator is only forward declared"
+      "patch_type": "backport"
+      "patch_source": "https://code.qt.io/cgit/qt/qtbase.git/commit/?h=6.12&id=852e93e9ee56b61eac58ca35605b790480d201e1"
+      "base_path": "qtbase"
   "6.8.3":
     - "patch_file": "patches/remove-linkage-to-agl-framework.patch"
       "base_path": "qtbase"
@@ -76,4 +88,9 @@ patches:
     - "patch_file": "patches/fix_webengine_on_VS2022_v17.14_6.8.x.diff"
       "base_path": "qtwebengine/src/3rdparty"
     - "patch_file": "patches/6.8.3-fix-macos-26.4.diff"
+      "base_path": "qtbase"
+    - "patch_file": "patches/qtbase-endentrylist-out-of-line.patch"
+      "patch_description": "Define QAbstractFileEngine::endEntryList() out of line: with C++23, MSVC instantiates the destructor of std::unique_ptr<QAbstractFileEngineIterator> in the inline body, where the iterator is only forward declared"
+      "patch_type": "backport"
+      "patch_source": "https://code.qt.io/cgit/qt/qtbase.git/commit/?h=6.12&id=852e93e9ee56b61eac58ca35605b790480d201e1"
       "base_path": "qtbase"

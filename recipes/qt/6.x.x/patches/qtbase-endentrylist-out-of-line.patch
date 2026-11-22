@@ -1,0 +1,56 @@
+From 852e93e9ee56b61eac58ca35605b790480d201e1 Mon Sep 17 00:00:00 2001
+From: Giuseppe D'Angelo <giuseppe.dangelo@kdab.com>
+Date: Sun, 15 Nov 2026 17:33:16 +0100
+Subject: [PATCH] QAbstractFileEngine: make endEntryList out of line
+
+The inline definition angers MSVC:
+
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.52.37025\include\memory(3337): error C2338: static assertion failed: 'can't delete an incomplete type'
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.52.37025\include\memory(3338): warning C4150: deletion of pointer to incomplete type 'QAbstractFileEngineIterator'; no destructor called
+
+This is because QAbstractFileEngineIterator is only forward declared at
+that point.
+Since there's no benefit at keeping the function inline, just move it
+out of line.
+
+Amends e146d835a69d57748bf2978cf5134ac5d86d81cf
+
+Change-Id: I6f4e7edca60009b5b2c41199428bea6840a100ce
+Reviewed-by: Thiago Macieira <thiago.macieira@intel.com>
+(cherry picked from commit 6701d3be7723d34983cdb7eeb9f1260e536f2041)
+Reviewed-by: Qt Cherry-pick Bot <cherrypick_bot@qt-project.org>
+---
+ src/corelib/io/qabstractfileengine.cpp | 6 ++++++
+ src/corelib/io/qabstractfileengine_p.h | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/corelib/io/qabstractfileengine.cpp b/src/corelib/io/qabstractfileengine.cpp
+index 9cd0820465ac..3e820bb177fe 100644
+--- a/src/corelib/io/qabstractfileengine.cpp
++++ b/src/corelib/io/qabstractfileengine.cpp
+@@ -986,6 +986,12 @@ QFileInfo QAbstractFileEngineIterator::currentFileInfo() const
+     Reimplement this function in a subclass to advance the iterator.
+ */
+ 
++QAbstractFileEngine::IteratorUniquePtr
++QAbstractFileEngine::endEntryList()
++{
++    return {};
++}
++
+ /*!
+     Returns a QAbstractFileEngine::IteratorUniquePtr, that can be used
+     to iterate over the entries in \a path, using \a filters for entry
+diff --git a/src/corelib/io/qabstractfileengine_p.h b/src/corelib/io/qabstractfileengine_p.h
+index 71491b49e443..19db9e1e40cf 100644
+--- a/src/corelib/io/qabstractfileengine_p.h
++++ b/src/corelib/io/qabstractfileengine_p.h
+@@ -130,7 +130,7 @@ class Q_CORE_EXPORT QAbstractFileEngine
+     typedef QAbstractFileEngineIterator Iterator;
+     using IteratorUniquePtr = std::unique_ptr<Iterator>;
+ 
+-    virtual IteratorUniquePtr endEntryList() { return {}; }
++    virtual IteratorUniquePtr endEntryList();
+     virtual IteratorUniquePtr
+     beginEntryList(const QString &path, QDirListing::IteratorFlags filters,
+                    const QStringList &filterNames);
