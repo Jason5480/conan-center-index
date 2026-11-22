@@ -1,0 +1,27 @@
+diff --git a/src/plugins/multimedia/ffmpeg/recordingengine/qffmpegvideoencoderutils.cpp b/src/plugins/multimedia/ffmpeg/recordingengine/qffmpegvideoencoderutils.cpp
+--- a/src/plugins/multimedia/ffmpeg/recordingengine/qffmpegvideoencoderutils.cpp
++++ b/src/plugins/multimedia/ffmpeg/recordingengine/qffmpegvideoencoderutils.cpp
+@@ -153,7 +153,7 @@
+     if (constraints && constraints->valid_sw_formats) {
+ 
+         const auto validSWFormatsForHWAccel =
+-                makeSpan(constraints->valid_sw_formats) | ranges::to<QMinimalFlatSet>();
++                makeSpan(constraints->valid_sw_formats) | ranges::to<QMinimalFlatSet<AVPixelFormat>>();
+ 
+         const auto codecPixelFormats = codec.pixelFormats();
+         auto validCodecPixelFormats = views::filter(codecPixelFormats, [&](AVPixelFormat fmt) {
+@@ -163,14 +163,6 @@
+             return !prohibitedFormats.count(fmt);
+         });
+ 
+-        if constexpr (false) {
+-            qDebug() << "validSWFormats" << (validSWFormatsForHWAccel | ranges::to<std::vector>())
+-                     << "scoredPixelFormats"
+-                     << (validCodecPixelFormats | views::transform([&](auto arg) {
+-                return std::pair(arg, scoreTargetSwFormat(arg));
+-            }) | ranges::to<std::vector>());
+-        }
+-
+         std::optional bestPixelFormat =
+                 findBestAVValue(validCodecPixelFormats, scoreTargetSwFormat);
+         if (bestPixelFormat)

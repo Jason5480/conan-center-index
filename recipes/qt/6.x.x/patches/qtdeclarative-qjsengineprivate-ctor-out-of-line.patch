@@ -1,0 +1,25 @@
+diff --git a/src/qml/jsapi/qjsengine.cpp b/src/qml/jsapi/qjsengine.cpp
+index 8b67de0..5b397cf 100644
+--- a/src/qml/jsapi/qjsengine.cpp
++++ b/src/qml/jsapi/qjsengine.cpp
+@@ -1292,6 +1292,7 @@ QJSEnginePrivate *QJSEnginePrivate::get(QV4::ExecutionEngine *e)
+     return e->jsEngine()->d_func();
+ }
+ 
++QJSEnginePrivate::QJSEnginePrivate() = default;
+ QJSEnginePrivate::~QJSEnginePrivate() = default;
+ 
+ void QJSEnginePrivate::addToDebugServer(QJSEngine *q)
+diff --git a/src/qml/jsapi/qjsengine_p.h b/src/qml/jsapi/qjsengine_p.h
+index 2427e50..d818ffd 100644
+--- a/src/qml/jsapi/qjsengine_p.h
++++ b/src/qml/jsapi/qjsengine_p.h
+@@ -42,7 +42,7 @@ public:
+     static const QJSEngine *get(const QJSEnginePrivate *e) { return e->q_func(); }
+     static QJSEnginePrivate *get(QV4::ExecutionEngine *e);
+ 
+-    QJSEnginePrivate() = default;
++    QJSEnginePrivate();
+     ~QJSEnginePrivate() override;
+ 
+     static void addToDebugServer(QJSEngine *q);
