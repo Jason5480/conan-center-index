@@ -75,7 +75,7 @@ patches:
     - "patch_file": "patches/qtdeclarative-qjsengineprivate-ctor-out-of-line.patch"
       "patch_description": "Define the QJSEnginePrivate constructor out of line: with C++23, MSVC instantiates the destructor of its std::unique_ptr<QV4::ExecutionEngine> member in the inline defaulted constructor, where the engine is only forward declared"
       "patch_type": "portability"
-      "patch_source": "https://code.qt.io/cgit/qt/qtdeclarative.git/tree/src/qml/jsapi/qjsengine_p.h?h=6.12"
+      "patch_source": "https://qt-project.atlassian.net/browse/QTBUG-152533"
       "base_path": "qtdeclarative"
     - "patch_file": "patches/qffmpeg-ranges-to-explicit-container.patch"
       "patch_description": "Name the container type in ranges::to<QMinimalFlatSet<AVPixelFormat>>(), which neither MSVC nor libc++ 17 can deduce with C++23, and drop the disabled debug output that needs the same deduction"
@@ -91,7 +91,7 @@ patches:
     - "patch_file": "patches/qtdeclarative-qjsengineprivate-ctor-out-of-line.patch"
       "patch_description": "Define the QJSEnginePrivate constructor out of line: with C++23, MSVC instantiates the destructor of its std::unique_ptr<QV4::ExecutionEngine> member in the inline defaulted constructor, where the engine is only forward declared"
       "patch_type": "portability"
-      "patch_source": "https://code.qt.io/cgit/qt/qtdeclarative.git/tree/src/qml/jsapi/qjsengine_p.h?h=6.12"
+      "patch_source": "https://qt-project.atlassian.net/browse/QTBUG-152533"
       "base_path": "qtdeclarative"
   "6.8.3":
     - "patch_file": "patches/remove-linkage-to-agl-framework.patch"
